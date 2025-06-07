@@ -1,5 +1,0 @@
-yolov8_detection:
-  ros__parameters:
-    model_name: "puzzlebot_traffic_signs_final.pt"
-    confidence_threshold: 0.3
-    update_rate: 10.0

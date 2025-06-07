@@ -1,83 +1,14 @@
-# Dataset pesado (no subir a GitHub)
-**/dataset/
-**/datasets/
-**/roboflow_dataset/
-**/extracted_dataset/
-**/input_dataset/
-**/*_dataset/
-*.zip
-*.tar.gz
+# Modelos YOLO (muy grandes para GitHub)
+*.pt
+**/*.pt
 
-# Resultados de entrenamiento pesados
-**/runs/
-**/results/train*/
-**/results/val*/
-**/weights/
-**/checkpoints/
-**/logs/
+# Dataset y resultados de entrenamiento
+yolobot_recognition/puzzlebot_yolo_training/dataset/
+yolobot_recognition/puzzlebot_yolo_training/results/
+yolobot_recognition/puzzlebot_yolo_training/source_images/
 
-# Mantener solo modelos finales específicos
-models/**/*.pt
-!models/puzzlebot_traffic_signs_final.pt
-!models/oil_pan_final.pt
-
-# Archivos temporales de Python
+# Cache y temporales
+*.cache
 __pycache__/
 *.pyc
-*.pyo
-*.pyd
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-
-# Entornos virtuales
-venv/
-env/
-ENV/
-.venv/
-
-# ROS2 build artifacts
-build/
-install/
-log/
-.colcon_workspace
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# OS
-.DS_Store
-Thumbs.db
-*.tmp
-
-# Logs y cache
 *.log
-wandb/
-.cache/
-.ultralytics/
-
-# Imagenes temporales grandes
-*.jpg
-*.jpeg
-*.png
-*.bmp
-*.mp4
-*.avi
-!docs/**/*.png
-!examples/**/*.png

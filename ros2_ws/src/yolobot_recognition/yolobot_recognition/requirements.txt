@@ -1,0 +1,16 @@
+# Dependencias esenciales para YoloBot Recognition
+ultralytics>=8.0.0
+torch>=2.0.0
+torchvision>=0.15.0
+opencv-python>=4.8.0
+numpy>=1.21.0
+pillow>=9.0.0
+pyyaml>=6.0
+pandas>=1.3.0
+matplotlib>=3.5.0
+albumentations>=1.3.0
+
+# ROS2 dependencies (install via apt)
+# ros-humble-cv-bridge
+# ros-humble-sensor-msgs
+# ros-humble-std-msgs

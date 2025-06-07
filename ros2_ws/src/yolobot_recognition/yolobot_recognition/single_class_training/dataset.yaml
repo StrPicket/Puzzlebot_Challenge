@@ -1,0 +1,7 @@
+names:
+- turn_right
+nc: 1
+path: single_class_training/dataset
+test: images/test
+train: images/train
+val: images/val
