@@ -4,6 +4,57 @@
 Main project developed in collaboration with Manchester Robotics, as part of the undergraduate courses <strong>"Robotics Foundation"</strong> and <strong>"Intelligent Robotics Implementation."</strong>
 </p>
 
+<div align="center">
+
+<a href="https://www.youtube.com/watch?v=VRI7v477p8M">
+<img src="https://img.youtube.com/vi/VRI7v477p8M/hqdefault.jpg" width="560" alt="Autonomous Driving PuzzleBot demo">
+</a>
+<br>
+<sub>▶ Click to watch the full demo on YouTube</sub>
+
+![ROS 2](https://img.shields.io/badge/ROS%202-Humble-CE0000?style=for-the-badge&logo=ros&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![OpenCV](https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)
+![YOLOv8](https://img.shields.io/badge/YOLOv8-00B8D4?style=for-the-badge)
+![Jetson](https://img.shields.io/badge/Jetson-76B900?style=for-the-badge&logo=nvidia&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Ubuntu](https://img.shields.io/badge/Ubuntu-22.04-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
+
+</div>
+
+## Project Overview
+
+<p align="justify">
+The final result of the challenge is an <strong>end-to-end autonomous driving system</strong> that runs fully on-board a fisheye-camera Puzzlebot with a Jetson, organized as a <strong>modular ROS 2 architecture</strong>. The robot perceives its environment with a camera, decides how to behave, and controls its wheels to follow the road safely.
+</p>
+
+| Layer | What it does | Main components |
+|---|---|---|
+| **Perception** | Understands the scene from the camera | Traffic-light color detection (HSV blobs), lane detection (bird's-eye view), traffic-sign recognition with YOLOv8 |
+| **Decision-making** | Chooses the right behavior | Finite-state machines that combine the perception signals and prioritize safe behavior in critical maneuvers |
+| **Control** | Moves the robot | Odometry localization, point-to-point PID control and PID line following |
+| **Low level** | Drives the motors | ESP32 + micro-ROS closed-loop PID speed control, hackerboard firmware |
+
+### Traffic-Sign Recognition with Deep Learning
+
+<p align="justify">
+Besides the classical-vision modules documented below (traffic-light color detection and line following), the system includes a <strong>YOLOv8 model for traffic-sign recognition</strong>. The full deep-learning workflow was developed for this project: data collection and labeling, model training, and real-time deployment on the embedded hardware. Its output is combined with the classical-vision signals in the decision layer, so the robot reacts to signs, traffic lights and the lane at the same time.
+</p>
+
+### Team & Role
+
+<p align="justify">
+Developed by a team of five students. My role was <strong>team lead</strong>, coordinating the system architecture and integration, and owning the deep-learning workflow for traffic-sign recognition. The system was validated through iterative field tests under changing conditions.
+</p>
+
+### Contents
+
+- [First Stage – ROS2 Brushed DC Motor Control](#first-stage--ros2-brushed-dc-motor-control-robotics-foundation-course)
+- [Setting Up the Puzzlebot](#setting-up-the-puzzlebot)
+- [Second Stage – Puzzlebot Control](#second-stage--puzzlebot-control-intelligent-robotics-implementation-course)
+
+---
+
 ## First Stage – ROS2 Brushed DC Motor Control (Robotics Foundation Course)
 
 <p align="justify">
@@ -467,7 +518,7 @@ You can configure a path in <code>puzzlebot_control/config/open_loop_point_contr
 </ul>
 
 <p align="justify">
-In both modes, it is necessary to specify <code>min_linear_speed</code>, <code>max_linear_speed</code>, <code>min_angular_speed</code>, <code>max_angular_speed</code>, and a <code>drift_margin</code>. The drift margin subtracts an extra quantity an extra quantity to each command to improve robustness against drift.
+In both modes, it is necessary to specify <code>min_linear_speed</code>, <code>max_linear_speed</code>, <code>min_angular_speed</code>, <code>max_angular_speed</code>, and a <code>drift_margin</code>. The drift margin subtracts an extra quantity to each command to improve robustness against drift.
 </p>
 
 <p align="justify">
@@ -543,8 +594,6 @@ open_loop_point_controller:
   <img src="https://github.com/user-attachments/assets/dd801868-afb5-45e8-ad59-7ed309a69d7d" alt="Point-to-Point Open Loop Control Speed-based Mode Demo" width="600"/>
 </p>
 
-<p align="justify">
-
 ### Point-to-Point PID Controller
 
 <p align="justify">
@@ -552,7 +601,7 @@ A PID controller was developed to improve accuracy using feedback from the robot
 </p>
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/04bee444-6aa4-4b1b-a97d-b6062694aa05" alt="Point-to-Point ṔID Control Demo" width="600"/>
+  <img src="https://github.com/user-attachments/assets/04bee444-6aa4-4b1b-a97d-b6062694aa05" alt="Point-to-Point PID Control Demo" width="600"/>
 </p>
 
 <p align="justify">
@@ -606,7 +655,7 @@ Visual decision-making capabilities are implemented through two additional nodes
 
 <p align="justify">
 - <code><strong>puzzlebot_vision/color_blob_detection</strong></code>: processes camera images using HSV color filtering and morphological operations to identify red, green, and yellow traffic light blobs, publishing <code>ColorBlobDetection</code> messages containing the largest detected blob's color.<br>
-- <code><strong>puzzlebot_behavior/traffic_light_fsm</strong></code>: contains a finite state machine that uses <code>ColorBlobDetection</code> messages to manage traffic light transitions and executes their corresponding actions. For green, it resumes the PID controller and scales its linear velocity control output to 100%, whereas for yellow, it scales the signal to <100% for slower movement; for red and no detection, it stops the PID controller entirely. All of these actions are executed through service calls.
+- <code><strong>puzzlebot_behavior/traffic_light_fsm</strong></code>: contains a finite state machine that uses <code>ColorBlobDetection</code> messages to manage traffic light transitions and executes their corresponding actions. For green, it resumes the PID controller and scales its linear velocity control output to 100%, whereas for yellow, it scales the signal to &lt;100% for slower movement; for red and no detection, it stops the PID controller entirely. All of these actions are executed through service calls.
 </p>
 
 <p align="justify">
